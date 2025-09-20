@@ -9,7 +9,7 @@ load_dotenv()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-JWT_SECRET = os.environ.get("JWT_SECRET", "devsecret-change-me")
+JWT_SECRET = os.environ.get("JWT_SECRET")
 JWT_ALG = "HS256"
 JWT_TTL_SECONDS = int(os.environ.get("JWT_TTL_SECONDS", "3600"))
 
