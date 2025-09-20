@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "functions": {
+    "routers/**.py": {
+      "runtime": "python3.11"
+    },
+    "main.py": {
+      "runtime": "python3.11"
+    }
+  },
+  "builds": [
+    {
+      "src": "/routers/(.*)",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "main.py",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "src": "/(.+\\.[a-z]+)$",
+      "dest": "/public/$1"
+    }
+  ]
+}
