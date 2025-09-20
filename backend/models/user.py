@@ -2,14 +2,17 @@
 from pydantic import BaseModel, Field
 from typing import List
 
+# Signup
 class SignupRequest(BaseModel):
     username: str = Field(min_length=3, max_length=50)
     password: str = Field(min_length=6, max_length=128)
 
+# Login
 class LoginRequest(BaseModel):
     username: str
     password: str
 
+# Auth
 class AuthResponse(BaseModel):
     token: str
     username: str
