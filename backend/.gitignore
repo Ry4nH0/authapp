@@ -1,3 +1,4 @@
 authvenv
 .env
 __pycache__/
+.vercel

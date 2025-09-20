@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "routers/**.py": {
-      "runtime": "python3.11"
-    },
-    "main.py": {
-      "runtime": "python3.11"
-    }
-  },
   "builds": [
     {
       "src": "/routers/(.*)",
