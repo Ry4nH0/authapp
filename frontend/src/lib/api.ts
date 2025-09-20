@@ -1,13 +1,27 @@
 // src/lib/api.ts
 export type AuthResponse = { token: string; username: string };
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "";
+// Normalize base URL to avoid trailing slashes causing //api/...
+const RAW_BASE = import.meta.env.VITE_API_URL ?? "";
+const API_BASE = RAW_BASE.replace(/\/+$/, ""); // e.g. "https://x.vercel.app/"" -> "https://x.vercel.app"
+
+// Join helper: ensures exactly one slash between base and path
+function joinUrl(path: string) {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE}${p}`;
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
-    ...init,
-  });
+  const url = joinUrl(path);
+
+  // Merge headers while keeping your defaults
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(init?.headers as Record<string, string> | undefined),
+  };
+
+  const res = await fetch(url, { ...init, headers });
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(text || `Request failed: ${res.status}`);
@@ -21,6 +35,7 @@ export const authApi = {
       method: "POST",
       body: JSON.stringify({ username, password }),
     }),
+
   login: (username: string, password: string) =>
     request<AuthResponse>("/api/login", {
       method: "POST",
@@ -49,7 +64,7 @@ export const storage = {
 };
 
 export const usersApi = {
-  // NEW: requires login; automatically reads token from storage
+  // Requires login; automatically sends Bearer token from storage
   async listUsernames(): Promise<{ usernames: string[] }> {
     const auth = storage.get();
     if (!auth?.token) throw new Error("Not authenticated");
@@ -60,4 +75,5 @@ export const usersApi = {
   },
 };
 
+// For debugging in UI
 export const config = { API_BASE: API_BASE || "(same origin)" };
