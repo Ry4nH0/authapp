@@ -6,12 +6,20 @@ import os
 app = FastAPI(title="My FastAPI App")
 
 # CORS for local dev (adjust as needed)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(","),
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(","),
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["*"],      # any origin
+    allow_methods=["*"],      # any method
+    allow_headers=["*"],      # any header
+    allow_credentials=False,  # IMPORTANT: must be False when using "*"
 )
 
 # Mount under /api so endpoints are /api/signup and /api/login
