@@ -121,7 +121,8 @@ export default function App() {
 
   return (
     <div className="container">
-      <h1>Minimal Auth Demo Best</h1>
+      <h1>Minimal Auth Demo</h1>
+      <h1>HELLO!!!!!!!</h1>
 
       <div className="tabs">
         <button
