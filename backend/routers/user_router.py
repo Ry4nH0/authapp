@@ -6,10 +6,12 @@ from routers.deps import require_user  # NEW
 
 router = APIRouter()
 
+# Signup
 @router.post("/signup", response_model=AuthResponse)
 def signup(payload: SignupRequest):
     return UserController.signup(payload)
 
+# Login
 @router.post("/login", response_model=AuthResponse)
 def login(payload: LoginRequest):
     return UserController.login(payload)
